@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { useToast } from "@/components/ui/use-toast";
@@ -129,34 +128,7 @@ const EmissionCalculator = () => {
     return parseFloat((weight * distance * factor).toFixed(2));
   };
 
-  const handleCalculate = async () => {
-    if (!source || !destination || weight === '' || weight <= 0) {
-      toast({
-        title: "Input Error",
-        description: "Please fill all fields with valid values.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const calculatedDistance = await getDistance(source, destination);
-      setDistance(calculatedDistance);
-
-      if (calculatedDistance) {
-        const calculatedEmissions = calculateEmissions(Number(weight), calculatedDistance, mode);
-        setEmissions(calculatedEmissions);
-        
-        toast({
-          title: "Calculation Complete",
-          description: `The carbon footprint is ${calculatedEmissions} kg CO₂.`,
-        });
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  
 
   const getModeIcon = () => {
     switch(mode) {
@@ -170,8 +142,8 @@ const EmissionCalculator = () => {
 
   return (
     <Layout>
-      <div className="container mx-auto py-8">
-        <div className="flex flex-col items-center justify-center">
+      <div className="container mx-auto pt-24 pb-12 px-4 md:px-6">
+        <div className="flex flex-col items-center justify-center max-w-5xl mx-auto">
           <h1 className="text-3xl font-bold mb-6 text-center">
             <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
               Carbon Footprint Calculator
@@ -182,7 +154,7 @@ const EmissionCalculator = () => {
             Calculate the carbon emissions of your product's journey through the supply chain.
           </p>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
