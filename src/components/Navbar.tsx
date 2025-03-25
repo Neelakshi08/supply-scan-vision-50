@@ -3,25 +3,14 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { 
-  QrCode, Map, User, Shield, LogOut, Globe, Menu, X, Home, ChevronRight
-} from 'lucide-react';
+import { QrCode, Map, User, Shield, LogOut, Globe } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { 
-  Sheet, 
-  SheetContent, 
-  SheetHeader, 
-  SheetTitle, 
-  SheetTrigger,
-  SheetFooter 
-} from '@/components/ui/sheet';
 
 export const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { currentUser, logout } = useAuth();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,7 +24,7 @@ export const Navbar: React.FC = () => {
   }, []);
 
   const navLinks = [
-    { path: '/', label: 'Home', icon: Home },
+    { path: '/', label: 'Home' },
     { path: '/scanner', label: 'Scan Product', icon: QrCode },
     { path: '/product-details', label: 'Tracking', icon: Map },
     { path: '/supplier-dashboard', label: 'Suppliers', icon: Shield },
@@ -47,7 +36,6 @@ export const Navbar: React.FC = () => {
     try {
       await logout();
       navigate('/');
-      setMobileMenuOpen(false);
     } catch (error) {
       console.error('Failed to log out', error);
     }
@@ -55,22 +43,14 @@ export const Navbar: React.FC = () => {
 
   const goToLogin = () => {
     navigate('/login');
-    setMobileMenuOpen(false);
   };
 
   const goToSignup = () => {
     navigate('/signup');
-    setMobileMenuOpen(false);
   };
 
   const goToDashboard = () => {
     navigate('/dashboard');
-    setMobileMenuOpen(false);
-  };
-
-  const navigateTo = (path: string) => {
-    navigate(path);
-    setMobileMenuOpen(false);
   };
 
   return (
@@ -89,7 +69,6 @@ export const Navbar: React.FC = () => {
           </span>
         </Link>
 
-        {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">
           {navLinks.map((link) => {
             const Icon = link.icon;
@@ -119,16 +98,16 @@ export const Navbar: React.FC = () => {
           })}
         </nav>
 
-        {/* Desktop Auth Buttons */}
-        <div className="hidden md:flex items-center gap-2">
+        <div className="flex items-center gap-2">
           {currentUser ? (
             <>
-              <span className="mr-2 text-sm text-muted-foreground">
+              <span className="hidden md:block mr-2 text-sm text-muted-foreground">
                 {currentUser.email}
               </span>
               <Button 
                 variant="ghost" 
                 size="sm" 
+                className="hidden md:inline-flex"
                 onClick={goToDashboard}
               >
                 Dashboard
@@ -136,6 +115,7 @@ export const Navbar: React.FC = () => {
               <Button 
                 variant="outline" 
                 size="sm" 
+                className="hidden md:inline-flex"
                 onClick={handleLogout}
               >
                 <LogOut className="h-4 w-4 mr-1" />
@@ -147,6 +127,7 @@ export const Navbar: React.FC = () => {
               <Button 
                 variant="outline" 
                 size="sm" 
+                className="hidden md:inline-flex"
                 onClick={goToLogin}
               >
                 Login
@@ -161,83 +142,6 @@ export const Navbar: React.FC = () => {
             </>
           )}
         </div>
-
-        {/* Mobile Menu Trigger */}
-        <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-          <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="md:hidden">
-              <Menu className="h-5 w-5" />
-              <span className="sr-only">Toggle Menu</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="right" className="py-6">
-            <SheetHeader className="mb-4">
-              <SheetTitle className="text-left text-xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-                SupplyScan
-              </SheetTitle>
-            </SheetHeader>
-            
-            <div className="flex flex-col gap-1 py-4">
-              {navLinks.map((link) => {
-                const Icon = link.icon;
-                const isActive = location.pathname === link.path;
-                
-                return (
-                  <Button
-                    key={link.path}
-                    variant={isActive ? "secondary" : "ghost"}
-                    className={cn(
-                      "justify-start h-10",
-                      isActive ? "font-medium" : ""
-                    )}
-                    onClick={() => navigateTo(link.path)}
-                  >
-                    <Icon className="mr-2 h-4 w-4" />
-                    {link.label}
-                    <ChevronRight className="ml-auto h-4 w-4 opacity-50" />
-                  </Button>
-                );
-              })}
-            </div>
-            
-            <SheetFooter className="flex flex-col gap-2 mt-auto">
-              {currentUser ? (
-                <>
-                  <p className="text-sm text-muted-foreground mb-2">
-                    Signed in as: <span className="font-medium">{currentUser.email}</span>
-                  </p>
-                  <Button 
-                    variant="outline" 
-                    onClick={goToDashboard}
-                  >
-                    Dashboard
-                  </Button>
-                  <Button 
-                    variant="destructive" 
-                    onClick={handleLogout}
-                  >
-                    <LogOut className="h-4 w-4 mr-2" />
-                    Logout
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Button 
-                    variant="outline" 
-                    onClick={goToLogin}
-                  >
-                    Login
-                  </Button>
-                  <Button 
-                    onClick={goToSignup}
-                  >
-                    Create Account
-                  </Button>
-                </>
-              )}
-            </SheetFooter>
-          </SheetContent>
-        </Sheet>
       </div>
     </header>
   );
