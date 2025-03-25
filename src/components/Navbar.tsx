@@ -40,6 +40,14 @@ export const Navbar: React.FC = () => {
     }
   };
 
+  const goToLogin = () => {
+    navigate('/login');
+  };
+
+  const goToSignup = () => {
+    navigate('/signup');
+  };
+
   return (
     <header
       className={cn(
@@ -107,14 +115,14 @@ export const Navbar: React.FC = () => {
                 variant="outline" 
                 size="sm" 
                 className="hidden md:inline-flex"
-                onClick={() => navigate('/login')}
+                onClick={goToLogin}
               >
                 Login
               </Button>
               <Button 
                 size="sm" 
                 className="neu-button"
-                onClick={() => navigate('/signup')}
+                onClick={goToSignup}
               >
                 Get Started
               </Button>
@@ -125,3 +133,5 @@ export const Navbar: React.FC = () => {
     </header>
   );
 };
+
+export default Navbar;

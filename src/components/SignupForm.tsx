@@ -13,7 +13,7 @@ import {
   CardHeader, 
   CardTitle 
 } from "@/components/ui/card";
-import { Mail, Lock, User, Loader2 } from "lucide-react";
+import { Mail, Lock, Loader2 } from "lucide-react";
 
 export const SignupForm = () => {
   const [email, setEmail] = useState("");
