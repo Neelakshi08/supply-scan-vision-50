@@ -4,8 +4,10 @@ import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { QrCode, Map, Globe, Shield, User } from "lucide-react";
+import DashboardFeatureCard from "@/components/DashboardFeatureCard";
+import DashboardActivity from "@/components/DashboardActivity";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 
 const Dashboard = () => {
   const { currentUser, logout } = useAuth();
@@ -61,6 +63,8 @@ const Dashboard = () => {
   return (
     <Layout className="py-24 px-4">
       <div className="container mx-auto max-w-6xl">
+        <PageBreadcrumb />
+        
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold">Welcome to SupplyScan</h1>
@@ -75,37 +79,20 @@ const Dashboard = () => {
           <h2 className="text-2xl font-semibold mb-4">Features</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((feature) => (
-              <Card key={feature.title} className="overflow-hidden transition-all hover:shadow-md">
-                <CardHeader className="pb-2">
-                  <CardTitle className="flex items-center gap-2">
-                    <feature.icon className="h-5 w-5 text-primary" />
-                    {feature.title}
-                  </CardTitle>
-                  <CardDescription>{feature.description}</CardDescription>
-                </CardHeader>
-                <CardFooter className="pt-2">
-                  <Button 
-                    variant="default" 
-                    onClick={() => navigate(feature.path)}
-                    className="w-full"
-                  >
-                    Access
-                  </Button>
-                </CardFooter>
-              </Card>
+              <DashboardFeatureCard 
+                key={feature.title}
+                title={feature.title}
+                description={feature.description}
+                icon={feature.icon}
+                path={feature.path}
+              />
             ))}
           </div>
         </section>
 
         <section>
           <h2 className="text-2xl font-semibold mb-4">Recent Activity</h2>
-          <Card>
-            <CardContent className="pt-6">
-              <p className="text-muted-foreground text-center py-8">
-                No recent activity to display
-              </p>
-            </CardContent>
-          </Card>
+          <DashboardActivity />
         </section>
       </div>
     </Layout>
