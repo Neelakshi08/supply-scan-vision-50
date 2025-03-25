@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -40,7 +39,7 @@ export const SignupForm = () => {
 
     try {
       await signup(email, password);
-      navigate("/");
+      navigate("/dashboard");
     } catch (err: any) {
       setError(err.message || "Failed to create an account");
     } finally {

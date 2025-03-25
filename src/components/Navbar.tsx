@@ -49,6 +49,10 @@ export const Navbar: React.FC = () => {
     navigate('/signup');
   };
 
+  const goToDashboard = () => {
+    navigate('/dashboard');
+  };
+
   return (
     <header
       className={cn(
@@ -100,6 +104,14 @@ export const Navbar: React.FC = () => {
               <span className="hidden md:block mr-2 text-sm text-muted-foreground">
                 {currentUser.email}
               </span>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="hidden md:inline-flex"
+                onClick={goToDashboard}
+              >
+                Dashboard
+              </Button>
               <Button 
                 variant="outline" 
                 size="sm" 

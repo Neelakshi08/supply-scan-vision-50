@@ -1,20 +1,37 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { QrCode, TrendingUp, CheckCircle, ShieldCheck } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Index = () => {
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     setIsVisible(true);
   }, []);
 
   const handleScanClick = () => {
-    navigate('/scanner');
+    if (currentUser) {
+      navigate('/scanner');
+    } else {
+      navigate('/login');
+    }
+  };
+
+  const handleSignupClick = () => {
+    navigate('/signup');
+  };
+
+  const handleLoginClick = () => {
+    navigate('/login');
+  };
+
+  const handleDashboardClick = () => {
+    navigate('/dashboard');
   };
 
   const features = [
@@ -40,9 +57,7 @@ const Index = () => {
 
   return (
     <Layout className="px-0" noNavbar>
-      {/* Hero Section */}
       <section className="min-h-screen relative overflow-hidden bg-gradient-to-b from-background to-blue-50 dark:from-background dark:to-blue-950/20">
-        {/* Navigation */}
         <nav className="absolute top-0 left-0 right-0 z-50 py-6">
           <div className="container mx-auto px-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -58,17 +73,36 @@ const Index = () => {
             </div>
 
             <div className="flex items-center gap-2">
-              <Button variant="ghost" size="sm" className="hidden md:inline-flex">
-                Login
-              </Button>
-              <Button size="sm">
-                Sign Up
-              </Button>
+              {currentUser ? (
+                <Button 
+                  variant="default" 
+                  size="sm" 
+                  onClick={handleDashboardClick}
+                >
+                  Dashboard
+                </Button>
+              ) : (
+                <>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="hidden md:inline-flex"
+                    onClick={handleLoginClick}
+                  >
+                    Login
+                  </Button>
+                  <Button 
+                    size="sm"
+                    onClick={handleSignupClick}
+                  >
+                    Sign Up
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </nav>
 
-        {/* Hero Content */}
         <div className="container mx-auto px-4 pt-32 relative z-10">
           <div className="flex flex-col items-center text-center mb-12">
             <h1 
@@ -104,22 +138,32 @@ const Index = () => {
                 Scan Product
               </Button>
               
-              <Button 
-                variant="outline" 
-                size="lg"
-                className="text-lg"
-              >
-                Learn More
-              </Button>
+              {currentUser ? (
+                <Button 
+                  variant="outline" 
+                  size="lg"
+                  className="text-lg"
+                  onClick={handleDashboardClick}
+                >
+                  Go to Dashboard
+                </Button>
+              ) : (
+                <Button 
+                  variant="outline" 
+                  size="lg"
+                  className="text-lg"
+                  onClick={handleSignupClick}
+                >
+                  Learn More
+                </Button>
+              )}
             </div>
           </div>
           
-          {/* Animated Supply Chain */}
           <div className={`max-w-4xl mx-auto my-12 transition-all duration-1000 delay-700 ${
             isVisible ? 'opacity-100' : 'opacity-0'
           }`}>
             <div className="relative h-32 rounded-2xl overflow-hidden bg-card shadow-xl border">
-              {/* Supply Chain Stages */}
               <div className="absolute inset-0 flex">
                 <div className="w-1/4 flex justify-center items-center border-r border-border p-4">
                   <div className="text-xs text-center">
@@ -168,7 +212,6 @@ const Index = () => {
                 </div>
               </div>
               
-              {/* Animated Product */}
               <div className="absolute top-1/2 transform -translate-y-1/2 -left-16 animate-move-right">
                 <div className="w-8 h-8 bg-primary text-white rounded-md flex items-center justify-center shadow-md">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -182,12 +225,10 @@ const Index = () => {
           </div>
         </div>
         
-        {/* Backdrop gradients */}
         <div className="absolute -top-24 -right-24 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-70"></div>
         <div className="absolute top-1/3 -left-24 w-72 h-72 bg-blue-400/10 rounded-full blur-3xl opacity-70"></div>
       </section>
 
-      {/* Features Section */}
       <section id="features" className="py-24 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
@@ -214,7 +255,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* How It Works */}
       <section id="how-it-works" className="py-24">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
@@ -260,7 +300,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
       <section className="py-16 bg-primary text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-6">Ready to Get Started?</h2>
@@ -277,18 +316,29 @@ const Index = () => {
               <QrCode className="mr-2 h-5 w-5" />
               Scan Product Now
             </Button>
-            <Button 
-              size="lg"
-              variant="outline" 
-              className="border-white text-white hover:bg-white/10"
-            >
-              Contact Sales
-            </Button>
+            {currentUser ? (
+              <Button 
+                size="lg"
+                variant="outline" 
+                className="border-white text-white hover:bg-white/10"
+                onClick={handleDashboardClick}
+              >
+                Go to Dashboard
+              </Button>
+            ) : (
+              <Button 
+                size="lg"
+                variant="outline" 
+                className="border-white text-white hover:bg-white/10"
+                onClick={handleSignupClick}
+              >
+                Create Account
+              </Button>
+            )}
           </div>
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="py-12 bg-gray-900 text-gray-300">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -339,3 +389,4 @@ const Index = () => {
 };
 
 export default Index;
+

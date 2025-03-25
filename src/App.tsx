@@ -14,6 +14,7 @@ import ConsumerPortal from "./pages/ConsumerPortal";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import EmissionCalculator from "./pages/EmissionCalculator";
+import Dashboard from "./pages/Dashboard";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/scanner" element={<Scanner />} />
             <Route path="/product-details" element={<ProductDetails />} />
             <Route path="/supplier-dashboard" element={<SupplierDashboard />} />
