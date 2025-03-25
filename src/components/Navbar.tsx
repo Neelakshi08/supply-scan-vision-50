@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { QrCode, Map, User, Shield, LogOut } from 'lucide-react';
+import { QrCode, Map, User, Shield, LogOut, Globe } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
 export const Navbar: React.FC = () => {
@@ -29,6 +29,7 @@ export const Navbar: React.FC = () => {
     { path: '/product-details', label: 'Tracking', icon: Map },
     { path: '/supplier-dashboard', label: 'Suppliers', icon: Shield },
     { path: '/consumer-portal', label: 'Verify', icon: User },
+    { path: '/emission-calculator', label: 'Emissions', icon: Globe },
   ];
 
   const handleLogout = async () => {

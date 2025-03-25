@@ -13,6 +13,7 @@ import SupplierDashboard from "./pages/SupplierDashboard";
 import ConsumerPortal from "./pages/ConsumerPortal";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import EmissionCalculator from "./pages/EmissionCalculator";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/product-details" element={<ProductDetails />} />
             <Route path="/supplier-dashboard" element={<SupplierDashboard />} />
             <Route path="/consumer-portal" element={<ConsumerPortal />} />
+            <Route path="/emission-calculator" element={<EmissionCalculator />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="*" element={<NotFound />} />
