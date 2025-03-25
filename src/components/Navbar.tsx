@@ -1,13 +1,16 @@
 
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { QrCode, Map, User, Shield } from 'lucide-react';
+import { QrCode, Map, User, Shield, LogOut } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 export const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { currentUser, logout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,6 +30,15 @@ export const Navbar: React.FC = () => {
     { path: '/supplier-dashboard', label: 'Suppliers', icon: Shield },
     { path: '/consumer-portal', label: 'Verify', icon: User },
   ];
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/');
+    } catch (error) {
+      console.error('Failed to log out', error);
+    }
+  };
 
   return (
     <header
@@ -74,12 +86,40 @@ export const Navbar: React.FC = () => {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" className="hidden md:inline-flex">
-            Login
-          </Button>
-          <Button size="sm" className="neu-button">
-            Get Started
-          </Button>
+          {currentUser ? (
+            <>
+              <span className="hidden md:block mr-2 text-sm text-muted-foreground">
+                {currentUser.email}
+              </span>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="hidden md:inline-flex"
+                onClick={handleLogout}
+              >
+                <LogOut className="h-4 w-4 mr-1" />
+                Logout
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="hidden md:inline-flex"
+                onClick={() => navigate('/login')}
+              >
+                Login
+              </Button>
+              <Button 
+                size="sm" 
+                className="neu-button"
+                onClick={() => navigate('/signup')}
+              >
+                Get Started
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </header>
