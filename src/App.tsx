@@ -11,6 +11,7 @@ import ProductDetails from "./pages/ProductDetails";
 import SupplierDashboard from "./pages/SupplierDashboard";
 import ConsumerPortal from "./pages/ConsumerPortal";
 
+// Create a client
 const queryClient = new QueryClient();
 
 const App = () => (
