@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { useToast } from "@/components/ui/use-toast";
@@ -128,8 +129,36 @@ const EmissionCalculator = () => {
     return parseFloat((weight * distance * factor).toFixed(2));
   };
 
-  
+  // Re-implementing the handleCalculate function that was missing
+  const handleCalculate = async () => {
+    if (!source || !destination || weight === '' || weight <= 0) {
+      toast({
+        title: "Input Error",
+        description: "Please fill all fields with valid values.",
+        variant: "destructive",
+      });
+      return;
+    }
 
+    setIsLoading(true);
+    try {
+      const calculatedDistance = await getDistance(source, destination);
+      setDistance(calculatedDistance);
+
+      if (calculatedDistance) {
+        const calculatedEmissions = calculateEmissions(Number(weight), calculatedDistance, mode);
+        setEmissions(calculatedEmissions);
+        
+        toast({
+          title: "Calculation Complete",
+          description: `The carbon footprint is ${calculatedEmissions} kg CO₂.`,
+        });
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
   const getModeIcon = () => {
     switch(mode) {
       case 'truck': return <Truck className="h-6 w-6 text-amber-600" />;
